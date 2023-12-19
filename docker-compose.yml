@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  event-app:
+    container_name: notification-app
+    build: ./app
+    ports:
+      - "3000:3000"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

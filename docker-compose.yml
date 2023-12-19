@@ -4,7 +4,7 @@ services:
     container_name: notification-app
     build: ./app
     ports:
-      - "3000:3000"
+      - "3003:3000"
     logging:
       driver: json-file
       options:

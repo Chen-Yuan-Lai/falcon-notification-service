@@ -1,7 +1,8 @@
 import fastify from 'fastify';
 import postgres from '@fastify/postgres';
+import checkRulesPlugin from './checkRules.js';
 
-export function createServer() {
+export default function createServer() {
   const app = fastify({
     logger: true,
   });
@@ -15,5 +16,6 @@ export function createServer() {
   const connectionString = `postgresql://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DATABASE}`;
 
   app.register(postgres, { connectionString, ssl });
+  app.register(checkRulesPlugin);
   return app;
 }

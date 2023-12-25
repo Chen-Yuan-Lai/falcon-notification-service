@@ -34,7 +34,6 @@ export const connectConsumer = async topic => {
 
       // const data = JSON.parse(message.value.toString());
       const data = message.value.toString();
-      console.log(data);
       messageEmitter.emit('message', data);
     },
   });

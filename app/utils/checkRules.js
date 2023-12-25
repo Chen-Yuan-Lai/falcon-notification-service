@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin';
-import * as AlertModels from './AlertRules';
+import * as AlertModels from './AlertRules.js';
 
 const checkRulesPlugin = fp(async fastify => {
   fastify.decorate('checkRules', async (client, ruleId) => {
@@ -8,19 +8,21 @@ const checkRulesPlugin = fp(async fastify => {
     const triggers = await AlertModels.getTriggers(client, ruleId);
 
     const issuesInterval = await AlertModels.getIssues(client, +projectId, actionInterval);
-    let isFire = false;
-    for (let i = 0; i < triggers.length; i++) {
-      if (+triggers[i].trigger_type_id === 1) {
-        if (issuesInterval.issue.length > 0) isFire = true;
-      } else {
-        const t = await AlertModels.getIssues(client, +projectId, triggers[i].time_window);
-        if (t.find(el => +el.event_num > +triggers[i].threshold)) isFire = true;
-      }
+    const hitCount = new Array(4).fill(0);
+    for (let i = 0; i < triggers.length; i += 1) {
+      const triggerId = Number(triggers[i].trigger_type_id);
+      const threshold = Number(triggers[i].threshold);
+      const issuesByTrigger = await AlertModels.getIssues(client, +projectId, triggers[i].time_window);
+      const checkThreshold = type => issuesByTrigger.find(el => Number(el[type]) > threshold);
 
-      if (filter === 'any') break;
+      if (triggerId === 1 && issuesInterval.length > 0) hitCount[1] += 1;
+      if (triggerId === 2 && Boolean(checkThreshold('event_num'))) hitCount[2] += 1;
+      if (triggerId === 3 && Boolean(checkThreshold('users_num'))) hitCount[3] += 1;
     }
-
-    return isFire;
+    const countSum = hitCount.reduce((acc, curr) => acc + curr, 0);
+    if (countSum === triggers.length && filter === 'all') return true;
+    if (countSum <= triggers.length && filter === 'any') return true;
+    return false;
   });
 });
 

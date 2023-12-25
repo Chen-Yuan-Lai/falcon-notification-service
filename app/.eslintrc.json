@@ -9,6 +9,12 @@
     }
   },
   "rules": {
+    "node/no-unpublished-import": [
+      "error",
+      {
+        "allowModules": ["vitest"]
+      }
+    ],
     "import/no-extraneous-dependencies": [
       "off",
       { "devDependencies": false, "optionalDependencies": false, "peerDependencies": false }

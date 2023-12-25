@@ -17,8 +17,8 @@ async function gracefulShutdown(app) {
 
 async function main() {
   const app = await createServer();
-
   const emitter = await connectConsumer('notification');
+
   emitter.on('message', async ruleId => {
     const client = await app.pg.connect();
     try {
@@ -29,6 +29,8 @@ async function main() {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      client.release();
     }
   });
 

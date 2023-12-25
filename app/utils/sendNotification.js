@@ -11,7 +11,7 @@ const sendNotification = async (message, tokens) => {
       method: 'POST',
     };
 
-    const promise = fetch('https://notify-api.line.me/api/notify', option);
+    const promise = fetch(process.env.LINE_NOTIFY_API, option);
     notifyPromises.push(promise);
   });
 

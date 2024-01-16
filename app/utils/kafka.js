@@ -9,10 +9,8 @@ const kafka = new Kafka({
   brokers,
   retry: {
     initialRetryTime: 500, // Initial delay between retries in milliseconds
-    maxRetryTime: 30000, // Maximum delay between retries in milliseconds
     factor: 2, // Exponential factor by which the retry time will be increased
     multiplier: 1.5, // Multiplier to calculate retry delay
-    maxInFlightRequests: 1, // Maximum number of in-flight requests during retry
     retryForever: true, // Whether to retry forever
   },
 });

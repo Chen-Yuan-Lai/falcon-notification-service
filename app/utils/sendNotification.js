@@ -1,3 +1,4 @@
+// bug
 const sendNotification = async (message, tokens) => {
   const notifyPromises = [];
 
@@ -15,7 +16,7 @@ const sendNotification = async (message, tokens) => {
     notifyPromises.push(promise);
   });
 
-  return await Promise.all(notifyPromises);
+  return Promise.all(notifyPromises);
 };
 
 export default sendNotification;

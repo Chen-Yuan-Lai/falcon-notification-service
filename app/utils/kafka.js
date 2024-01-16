@@ -9,9 +9,10 @@ const kafka = new Kafka({
   brokers,
   retry: {
     initialRetryTime: 500, // Initial delay between retries in milliseconds
+    retries: Infinity, // Set retries to Infinity for indefinite retries
     factor: 2, // Exponential factor by which the retry time will be increased
     multiplier: 1.5, // Multiplier to calculate retry delay
-    retryForever: true, // Whether to retry forever
+    maxRetryTime: Infinity, // Maximum wait time for a retry in milliseconds
   },
 });
 

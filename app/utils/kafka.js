@@ -12,7 +12,7 @@ const kafka = new Kafka({
     retries: Infinity, // Set retries to Infinity for indefinite retries
     factor: 2, // Exponential factor by which the retry time will be increased
     multiplier: 1.5, // Multiplier to calculate retry delay
-    maxRetryTime: Infinity, // Maximum wait time for a retry in milliseconds
+    maxRetryTime: 60000, // Maximum wait time for a retry in milliseconds
   },
 });
 
